@@ -5,7 +5,7 @@ services:
     image: postgres:16.2
     container_name: jpa-exercise
     environment:
-      POSTGRES_DB: jpa-exercise-db
+      POSTGRES_DB: java-4-db
       POSTGRES_USER: root
       POSTGRES_PASSWORD: password
     ports:
