@@ -1,3 +1,9 @@
 package edu.cscc.jpaexercise.jpaexercise.controllers.requests;
 
-public record CreateUserRequest(String firstName, String lastName) { }
+import java.util.List;
+
+public record CreateUserRequest(
+        String firstName,
+        String lastName,
+        List<UserAddressData> userAddresses
+) { }

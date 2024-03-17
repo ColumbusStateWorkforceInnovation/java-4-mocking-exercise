@@ -3,7 +3,9 @@ package edu.cscc.jpaexercise.jpaexercise.controllers;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.cscc.jpaexercise.jpaexercise.controllers.requests.CreateUserRequest;
+import edu.cscc.jpaexercise.jpaexercise.controllers.requests.UserAddressData;
 import edu.cscc.jpaexercise.jpaexercise.models.User;
+import edu.cscc.jpaexercise.jpaexercise.models.UserAddress;
 import edu.cscc.jpaexercise.jpaexercise.repositories.UsersRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -49,7 +51,11 @@ class UsersControllerTest {
 
     @Test
     public void postCreatesANewUser() throws Exception {
-        CreateUserRequest createUserRequest = new CreateUserRequest("Jim", "Kirkbride");
+        List<UserAddressData> userAddresses = List.of(
+                new UserAddressData("123 Main St", "Columbus", "OH", "43215"),
+                new UserAddressData("456 Elm St", "Columbus", "OH", "43215"),
+                new UserAddressData("789 Oak St", "Columbus", "OH", "43215"));
+        CreateUserRequest createUserRequest = new CreateUserRequest("Jim", "Kirkbride", userAddresses);
         mockMvc.perform(MockMvcRequestBuilders.post("/users")
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(createUserRequest)))
