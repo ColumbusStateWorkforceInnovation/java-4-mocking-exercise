@@ -1,9 +1,7 @@
 package edu.cscc.jpaexercise.jpaexercise.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 
 import java.util.Objects;
 
@@ -11,6 +9,7 @@ import java.util.Objects;
 public class UserAddress {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
     private String street;
@@ -23,9 +22,18 @@ public class UserAddress {
         optional = false
     )
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
 
     public UserAddress() {}
+
+    public UserAddress(User user, String street, String city, String state, String zip) {
+        this.user = user;
+        this.street = street;
+        this.city = city;
+        this.state = state;
+        this.zip = zip;
+    }
 
     public Integer getId() {
         return id;
