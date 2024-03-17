@@ -1,10 +1,8 @@
 package edu.cscc.jpaexercise.jpaexercise.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity(name = "users")
@@ -16,6 +14,9 @@ public class User {
 
     private String firstName;
     private String lastName;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<UserAddress> userAddresses;
 
     public User() {}
 
@@ -46,6 +47,14 @@ public class User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public List<UserAddress> getUserAddresses() {
+        return userAddresses;
+    }
+
+    public void setUserAddresses(List<UserAddress> userAddresses) {
+        this.userAddresses = userAddresses;
     }
 
     @Override
