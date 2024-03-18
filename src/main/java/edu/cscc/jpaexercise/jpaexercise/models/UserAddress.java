@@ -1,6 +1,5 @@
 package edu.cscc.jpaexercise.jpaexercise.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Objects;
@@ -18,11 +17,10 @@ public class UserAddress {
     private String zip;
 
     @ManyToOne(
-        fetch = jakarta.persistence.FetchType.LAZY,
+        fetch = FetchType.EAGER,
         optional = false
     )
     @JoinColumn(name = "user_id")
-    @JsonIgnore
     private User user;
 
     public UserAddress() {}

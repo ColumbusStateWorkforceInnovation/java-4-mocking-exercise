@@ -1,5 +1,6 @@
 package edu.cscc.jpaexercise.jpaexercise.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class User {
             fetch = FetchType.EAGER,
             cascade = CascadeType.ALL
     )
+    @JsonIgnoreProperties("user")
     private List<UserAddress> userAddresses;
 
     public User() {}
