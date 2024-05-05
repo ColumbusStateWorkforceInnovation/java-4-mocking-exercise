@@ -1,6 +1,8 @@
 package edu.cscc.jpaexercise.jpaexercise.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 
 import java.util.Objects;
 
@@ -11,10 +13,10 @@ public class UserAddress {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    private String street;
-    private String city;
-    private String state;
-    private String zip;
+    @NotEmpty private String street;
+    @NotEmpty private String city;
+    @NotEmpty @Size(min = 2, max = 2) private String state;
+    @NotEmpty @Size(min = 5, max=5) private String zip;
 
     @ManyToOne(
         fetch = FetchType.EAGER,

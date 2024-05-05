@@ -86,4 +86,28 @@ class UserAddressesControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.zip").value(createUserAddressRequest.zip()))
                 .andExpect(status().isOk());
     }
+
+    @Test
+    @DisplayName("It returns a 404 when the user is not found")
+    public void itReturnsA404WhenTheUserIsNotFound() throws Exception {
+        CreateUserAddressRequest createUserAddressRequest =
+                new CreateUserAddressRequest(1, "123 Main St", "Columbus", "OH", "43215");
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/user-addresses")
+                .contentType("application/json")
+                .content(objectMapper.writeValueAsString(createUserAddressRequest)))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @DisplayName("It returns a 400 when the user address request is invalid")
+    public void itReturnsA400WhenTheUserAddressRequestIsInvalid() throws Exception {
+        CreateUserAddressRequest createUserAddressRequest =
+                new CreateUserAddressRequest(null, "", null, "Ohio", "43");
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/user-addresses")
+                .contentType("application/json")
+                .content(objectMapper.writeValueAsString(createUserAddressRequest)))
+                .andExpect(status().isBadRequest());
+    }
 }
