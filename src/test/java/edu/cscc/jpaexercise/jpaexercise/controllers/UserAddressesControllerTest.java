@@ -1,6 +1,7 @@
 package edu.cscc.jpaexercise.jpaexercise.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import edu.cscc.jpaexercise.jpaexercise.controllers.requests.CreateUserAddressRequest;
 import edu.cscc.jpaexercise.jpaexercise.models.User;
 import edu.cscc.jpaexercise.jpaexercise.models.UserAddress;
 import edu.cscc.jpaexercise.jpaexercise.repositories.UserAddressesRepository;
@@ -66,5 +67,23 @@ class UserAddressesControllerTest {
     public void itReturnsA404WhenTheUserAddressIsNotFound() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/user-addresses/1/user"))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @DisplayName("It can create a user address")
+    public void itCanCreateAUserAddress() throws Exception {
+        User user = usersRepository.save(new User("Your", "Name"));
+        CreateUserAddressRequest createUserAddressRequest =
+                new CreateUserAddressRequest(user.getId(), "123 Main St", "Columbus", "OH", "43215");
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/user-addresses")
+                .contentType("application/json")
+                .content(objectMapper.writeValueAsString(createUserAddressRequest)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.street").value(createUserAddressRequest.street()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.city").value(createUserAddressRequest.city()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.state").value(createUserAddressRequest.state()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.zip").value(createUserAddressRequest.zip()))
+                .andExpect(status().isOk());
     }
 }
