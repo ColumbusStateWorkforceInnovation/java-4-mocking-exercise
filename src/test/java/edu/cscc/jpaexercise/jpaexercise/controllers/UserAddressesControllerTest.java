@@ -60,4 +60,11 @@ class UserAddressesControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(user)));
     }
+
+    @Test
+    @DisplayName("It returns a 404 when the user address is not found")
+    public void itReturnsA404WhenTheUserAddressIsNotFound() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/user-addresses/1/user"))
+                .andExpect(status().isNotFound());
+    }
 }

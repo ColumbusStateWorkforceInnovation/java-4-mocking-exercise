@@ -1,5 +1,6 @@
 package edu.cscc.jpaexercise.jpaexercise.controllers;
 
+import edu.cscc.jpaexercise.jpaexercise.exceptions.ResourceNotFoundException;
 import edu.cscc.jpaexercise.jpaexercise.models.User;
 import edu.cscc.jpaexercise.jpaexercise.models.UserAddress;
 import edu.cscc.jpaexercise.jpaexercise.repositories.UserAddressesRepository;
@@ -27,7 +28,7 @@ public class UserAddressesController {
     public ResponseEntity<?> getUser(@PathVariable Integer id) {
         Optional<UserAddress> maybeUserAddress = userAddressesRepository.findById(id);
         if (maybeUserAddress.isEmpty()) {
-            return ResponseEntity.notFound().build();
+            throw new ResourceNotFoundException("User address not found");
         }
 
         UserAddress userAddress = maybeUserAddress.get();
