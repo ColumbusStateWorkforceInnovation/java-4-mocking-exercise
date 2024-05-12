@@ -1,6 +1,7 @@
 package edu.cscc.jpaexercise.jpaexercise.services;
 
 import edu.cscc.jpaexercise.jpaexercise.controllers.requests.CreateUserAddressRequest;
+import edu.cscc.jpaexercise.jpaexercise.exceptions.ResourceNotFoundException;
 import edu.cscc.jpaexercise.jpaexercise.models.User;
 import edu.cscc.jpaexercise.jpaexercise.models.UserAddress;
 import edu.cscc.jpaexercise.jpaexercise.repositories.UserAddressesRepository;
@@ -18,6 +19,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -62,5 +64,18 @@ class UserAddressesServiceTest {
         assertEquals(createUserAddressRequest.city(), userAddressArgumentCaptor.getValue().getCity());
         assertEquals(createUserAddressRequest.state(), userAddressArgumentCaptor.getValue().getState());
         assertEquals(createUserAddressRequest.zip(), userAddressArgumentCaptor.getValue().getZip());
+    }
+
+    @Test
+    @DisplayName("It throws a ResourceNotFoundException when the user is not found")
+    public void itThrowsAResourceNotFoundExceptionWhenTheUserIsNotFound() {
+        CreateUserAddressRequest createUserAddressRequest =
+                new CreateUserAddressRequest(
+                        1, "123 Main St", "Columbus", "OH", "43215"
+                );
+
+        when(usersRepository.findById(createUserAddressRequest.userId())).thenReturn(Optional.empty());
+
+        assertThrows(ResourceNotFoundException.class, () -> userAddressesService.createUserAddress(createUserAddressRequest));
     }
 }
