@@ -6,6 +6,7 @@ import edu.cscc.jpaexercise.jpaexercise.models.User;
 import edu.cscc.jpaexercise.jpaexercise.models.UserAddress;
 import edu.cscc.jpaexercise.jpaexercise.repositories.UserAddressesRepository;
 import edu.cscc.jpaexercise.jpaexercise.repositories.UsersRepository;
+import edu.cscc.jpaexercise.jpaexercise.services.UserAddressesService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,9 @@ public class UserAddressesController {
 
     @Autowired
     private UserAddressesRepository userAddressesRepository;
+
+    @Autowired
+    private UserAddressesService userAddressesService;
 
     @Autowired
     private UsersRepository usersRepository;
@@ -38,18 +42,7 @@ public class UserAddressesController {
 
     @PostMapping()
     public ResponseEntity<?> create(@Valid @RequestBody CreateUserAddressRequest createUserAddressRequest) {
-        Optional<User> user = usersRepository.findById(createUserAddressRequest.userId());
-        if (user.isEmpty()) {
-            throw new ResourceNotFoundException("User not found");
-        }
-        UserAddress userAddress = new UserAddress(
-                user.get(),
-                createUserAddressRequest.street(),
-                createUserAddressRequest.city(),
-                createUserAddressRequest.state(),
-                createUserAddressRequest.zip()
-        );
-        UserAddress newUserAddress = userAddressesRepository.save(userAddress);
-        return ResponseEntity.ok(newUserAddress);
+        UserAddress userAddress = userAddressesService.createUserAddress(createUserAddressRequest);
+        return ResponseEntity.ok(userAddress);
     }
 }
