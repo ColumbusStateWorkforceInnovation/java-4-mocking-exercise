@@ -1,4 +1,4 @@
-package edu.cscc.jpaexercise.jpaexercise.controllers;
+package edu.cscc.jpaexercise.jpaexercise.controllers.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.cscc.jpaexercise.jpaexercise.controllers.requests.CreateUserAddressRequest;
