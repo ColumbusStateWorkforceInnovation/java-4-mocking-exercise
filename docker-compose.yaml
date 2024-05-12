@@ -3,7 +3,7 @@ version: '3.8'
 services:
   postgres:
     image: postgres:16.2
-    container_name: jpa-exercise
+    container_name: mocking-exercise
     environment:
       POSTGRES_DB: java-4-db
       POSTGRES_USER: root
